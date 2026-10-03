@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><title>TANI CERDAS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#faf6ea;--card:#fff;--ink:#1d2b20;--mut:#5d6b60;--g1:#14532d;--g2:#3f9b4f;--line:#e4dfcb;--warn:#b45309;--bad:#b91c1c;--soft:#eef5e6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#111a13;--card:#1b271e;--ink:#eef3ea;--mut:#a3b3a5;--g1:#0e3a20;--g2:#6cc47c;--line:#2d3f32;--soft:#22331f}}
+:root[data-theme=dark]{--bg:#111a13;--card:#1b271e;--ink:#eef3ea;--mut:#a3b3a5;--g1:#0e3a20;--g2:#6cc47c;--line:#2d3f32;--soft:#22331f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,Arial,sans-serif}
+#nav{position:fixed;inset:0 auto 0 0;width:240px;background:var(--g1);color:#fff;padding:16px 10px;overflow:auto;z-index:20;padding-top:calc(16px + env(safe-area-inset-top,0px))}
+#nav h1{font-size:20px;margin:0 8px 2px}#nav small{display:block;margin:0 8px 14px;opacity:.8;font-size:12px}
+#nav a{display:block;color:#e8f3e0;padding:10px 12px;border-radius:10px;cursor:pointer;text-decoration:none;margin-bottom:2px}
+#nav a.on,#nav a:hover{background:rgba(255,255,255,.16)}
+#top{display:none;position:sticky;top:0;background:var(--g1);color:#fff;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));z-index:15;align-items:center;gap:10px}
+#top button{background:none;border:0;color:#fff;font-size:24px}
+main{margin-left:240px;padding:22px;max-width:1100px}
+h2{margin:0 0 4px;color:var(--g1)}@media(prefers-color-scheme:dark){h2{color:var(--g2)}}
+.sub{color:var(--mut);margin:0 0 16px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.stat b{display:block;font-size:26px;color:var(--g1)}@media(prefers-color-scheme:dark){.stat b{color:var(--g2)}}
+.stat span{color:var(--mut);font-size:13px}
+label{display:block;font-size:13px;color:var(--mut);margin:6px 0 2px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+.btn{background:var(--g2);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit;font-weight:600;margin:4px 4px 4px 0}
+@media(prefers-color-scheme:dark){.btn{color:#0b1a0f}}
+.btn.alt{background:var(--soft);color:var(--ink);border:1px solid var(--line)}.btn.del{background:var(--bad);color:#fff}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{background:var(--soft)}
+.tag{display:inline-block;background:var(--soft);padding:2px 9px;border-radius:99px;font-size:12px}
+.sim{background:#fff3cd;color:#664d03;padding:6px 10px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.warn{color:var(--warn);font-size:13px;margin:4px 0}.err{color:var(--bad);font-size:13px}
+.bar{height:16px;background:var(--soft);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--g2)}
+@media(max-width:800px){#nav{transform:translateX(-100%);transition:.2s}#nav.open{transform:none}#top{display:flex}main{margin:0;padding:14px}}
+@media print{#nav,#top,.np{display:none!important}main{margin:0}}
+</style></head><body>
+<div id="top"><button onclick="nav.classList.toggle('open')" aria-label="Menu">☰</button><b>🌱 TANI CERDAS</b></div>
+<div id="nav"></div><main id="m"></main>
+<script>
+const $=id=>document.getElementById(id),nav=$('nav'),M=$('m');
+const fmt=(n,d=2)=>Number(n).toLocaleString('id-ID',{maximumFractionDigits:d});
+const today=()=>new Date().toISOString().slice(0,10);
+let mem=null;const KEY='tanicerdas_v1';
+const seed=()=>({lahan:[{id:1,nama:'Petak A (simulasi)',lokasi:'Bogor',luas:16,tanah:'Latosol',kom:'Cabai',var:'Rawit',tgl:'2026-08-01',status:'Aktif'},{id:2,nama:'Sawah Blok 2 (simulasi)',lokasi:'Cianjur',luas:5000,tanah:'Aluvial',kom:'Padi',var:'Inpari',tgl:'2026-07-15',status:'Aktif'}],
+hitung:[],kec:[{id:1,tgl:'2026-08-02',kom:'Cabai',var:'Rawit',uji:100,kecambah:85,cat:'Data simulasi'}],
+tumbuh:[7,14,21,28,35].map((d,i)=>({id:i+1,lahan:'Petak A (simulasi)',tgl:'2026-08-'+String(d+1).padStart(2,'0'),awal:20,hidup:20-(i>2?1:0),tinggi:[5,11,19,28,36][i],kond:'Sehat',hama:0})),
+panen:[],giat:[{id:1,tgl:'2026-10-08',jenis:'Pemupukan',biaya:15000,jumlah:'400 g KCl',cat:'Jadwal contoh (simulasi)'}],
+keluhan:[{id:1,nama:'Anonim',kom:'Cabai',kat:'Daun menguning',desk:'Daun bawah menguning sejak 3 hari (simulasi).',status:'Menunggu tanggapan',tgl:'2026-09-28',resp:[]}],bk:{baik:85,sedang:70}});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}S=S||seed();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const nid=a=>a.reduce((x,y)=>Math.max(x,y.id),0)+1;
+const v=id=>$(id).value.trim(),n=id=>parseFloat($(id).value);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const inp=(id,l,t='text',x='')=>`<div><label for="${id}">${l}</label><input id="${id}" type="${t}" ${x}></div>`;
+const sel=(id,l,o,x='')=>`<div><label for="${id}">${l}</label><select id="${id}" ${x}>${o.map(a=>`<option>${esc(a)}</option>`).join('')}</select></div>`;
+const KOM=['Padi','Jagung','Cabai','Tomat','Bawang merah','Kentang','Kedelai','Sayuran daun','Lainnya'];
+const lahanOpts=()=>S.lahan.map(l=>l.nama);
+
+/* ===== modul kalkulasi (murni, dapat diuji) ===== */
+const Calc={
+ hara:(dose,m2)=>dose*m2/10000,
+ produk:(kg,pct)=>pct>0?kg/(pct/100):NaN,
+ kandungan:(prodKg,pct)=>prodKg*pct/100,
+ germ:(u,k)=>u>0?k/u*100:NaN,
+ hidup:(a,b)=>a>0?b/a*100:NaN,
+ prod:(kg,ha)=>ha>0?kg/ha:NaN,
+ /* za:{g,n,s} gram ZA dan kadar N,S (%) -> dikurangkan dari kebutuhan N dan S */
+ rows(m2,rows,za){const zn=za.g/1000*za.n/100,zs=za.g/1000*za.s/100;
+  return rows.map(r=>{const need=Calc.hara(r.dose,m2);let sup=0;if(r.k=='N')sup=zn;if(r.k=='S')sup=zs;
+   const rem=Math.max(0,need-sup),pk=Calc.produk(rem,r.pct);return{...r,need,sup,rem,kg:pk,g:pk*1000,over:sup>need+1e-12}})}
+};
+function selfTest(){const r=Calc.rows(16,[{k:'N',dose:250,pct:46},{k:'P',dose:300,pct:36},{k:'K',dose:150,pct:60}],{g:0,n:21,s:24});
+ const t=[['Kebutuhan N 0,4 kg',r[0].need,.4],['Urea 869,57 g',r[0].g,869.565],['P₂O₅ 0,48 kg',r[1].need,.48],['SP-36 1333,33 g',r[1].g,1333.333],['K₂O 0,24 kg',r[2].need,.24],['KCl 400 g',r[2].g,400],['Germinasi 85/100',Calc.germ(100,85),85]];
+ return t.map(x=>[x[0],Math.abs(x[1]-x[2])<0.01]);}
+
+/* ===== grafik SVG ===== */
+function line(pts,unit){if(pts.length<2)return'<p class="sub">Belum cukup data untuk grafik (min. 2 catatan).</p>';
+ const W=520,H=190,p=30,mx=Math.max(...pts.map(q=>q.v))*1.1||1;const X=i=>p+i*(W-2*p)/(pts.length-1),Y=y=>H-p-y/mx*(H-2*p);
+ return`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:100%"><polyline fill="none" stroke="#3f9b4f" stroke-width="3" points="${pts.map((q,i)=>X(i)+','+Y(q.v)).join(' ')}"/>${pts.map((q,i)=>`<circle cx="${X(i)}" cy="${Y(q.v)}" r="4" fill="#14532d"/><text x="${X(i)}" y="${H-8}" font-size="10" text-anchor="middle" fill="currentColor">${q.l.slice(5)}</text><text x="${X(i)}" y="${Y(q.v)-8}" font-size="10" text-anchor="middle" fill="currentColor">${fmt(q.v,1)}</text>`).join('')}<text x="4" y="12" font-size="10" fill="currentColor">${unit}</text></svg>`}
+const tbl=(h,r)=>`<div class="tw"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r.map(x=>`<tr>${x.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${h.length}">Belum ada data</td></tr>`}</table></div>`;
+const simBadge='<div class="sim">⚠ Data contoh = <b>data simulasi</b>. Data disimpan hanya di browser Anda (localStorage); tidak ada server, akun, atau penyuluh sungguhan yang terhubung.</div>';
+
+/* ===== router ===== */
+const P=[['dash','🏠 Dashboard'],['pupuk','🧪 Kalkulator
